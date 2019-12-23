@@ -4,6 +4,7 @@
 
 #ifndef _KDTREE_H
 #define _KDTREE_H
+
 #include <algorithm>
 #include <memory>
 #include <array>
@@ -22,6 +23,7 @@ double getDimension(int dimension, point p){
     } else if (dimension % 3 == 2){
         return p.z;
     }
+    return 0;
 }
 
 
@@ -40,7 +42,7 @@ private:
         std::shared_ptr<node> right_;
 
         //Costructor de la clase
-        node(const point& pt) : pto(pt), left_(nullptr), right_(nullptr){}
+        explicit node(const point& pt) : pto(pt), left_(nullptr), right_(nullptr){}
 
         //Obtiene el valor de la dimension indicada como parametro
         double get(int index) const{return getDimension(index,pto);}
@@ -61,7 +63,7 @@ private:
     // Comparador de nodos (utilizado para la ordenacion)
     struct node_cmp{
         int index_;
-        node_cmp(int index) : index_(index){}
+        explicit node_cmp(int index) : index_(index){}
         bool operator()(const node& n1, const node& n2) const{
             return getDimension(index_,n1.pto) <  getDimension(index_, n2.pto);
         }
@@ -81,7 +83,7 @@ private:
     }
 
     //Calcula el punto mas cercano al pasado como parametro
-    void cercano(std::shared_ptr<node> root, const point& nuevo, size_t index) {
+    void cercano(const std::shared_ptr<node>& root, const point& nuevo, size_t index) {
         if (root == nullptr) {
             return;
         }
@@ -121,7 +123,7 @@ public:
 
 
     //Crea un arbol pasada una lista de puntos tridimensionales
-    kdtree(std::list<point> in){
+    explicit kdtree(std::list<point> in){
         auto inicio = in.begin();
         auto fin = in.end();
         dimensiones = 3;

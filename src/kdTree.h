@@ -123,7 +123,7 @@ public:
 
 
     //Crea un arbol pasada una lista de puntos tridimensionales
-    explicit kdtree(std::list<point> in){
+    kdtree(std::list<point> in){
         auto inicio = in.begin();
         auto fin = in.end();
         dimensiones = 3;
